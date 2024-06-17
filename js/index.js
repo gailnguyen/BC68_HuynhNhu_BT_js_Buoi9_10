@@ -169,17 +169,43 @@ function updateSinhVien(tknv) {
 
 // chức năng tìm kiếm
 function searchNhanVien(event) {
-  console.log(event.target.value);
+  // console.log(event.target.value);
   let newKeyWord = toNonAccentVietnamese(
     event.target.value.toLowerCase().trim()
   );
   console.log(newKeyWord);
-  console.log(arrNhanVien);
-  let arrNhanVienFilter = arrNhanVien.filter((item, index) => {
-    let newTenNhanVien = toNonAccentVietnamese(item.name.toLowerCase().trim());
-    return newTenNhanVien.includes(newKeyWord);
+
+  let newArrNhanVien = [];
+  // console.log(arrNhanVien);
+  for (let nhanVien of arrNhanVien) {
+    // console.log(nhanVien);
+    let nhanVienFilter = new NhanVien();
+    Object.assign(nhanVienFilter, nhanVien);
+    // console.log(nhanVienFilter);
+
+    nhanVienFilter.xepLoai = nhanVienFilter.xepLoai();
+    // nhanVienFilter.tinhTongLuong = nhanVienFilter.tinhTongLuong();
+    // console.log(nhanVienFilter);
+
+    newArrNhanVien.push(nhanVienFilter);
+    // console.log(newArrNhanVien);
+    // return newArrNhanVien;
+  }
+
+  // console.log(newArrNhanVien);
+  let arrNhanVienFilter = newArrNhanVien.filter((item, index) => {
+    let newXepLoai = toNonAccentVietnamese(item.xepLoai.toLowerCase().trim());
+    console.log(newXepLoai);
+    return newXepLoai.includes(newKeyWord);
   });
-  console.log(arrNhanVienFilter);
-  renderArrNhanVien(arrNhanVienFilter);
+
+  let filteredArray = arrNhanVien.filter((item1, index) => {
+    return arrNhanVienFilter.some((item2, index) => {
+      return item2.tknv === item1.tknv;
+    });
+  });
+  console.log(filteredArray);
+
+  renderArrNhanVien(filteredArray);
 }
 document.getElementById("searchName").oninput = searchNhanVien;
