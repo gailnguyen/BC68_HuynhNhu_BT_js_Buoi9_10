@@ -83,14 +83,18 @@ function renderArrNhanVien(arr = arrNhanVien) {
     Object.assign(newNhanVien, nhanVien);
     // console.log(newNhanVien);
     let { tknv, name, email, datepicker, chucvu } = newNhanVien;
+    console.log(typeof datepicker);
+    let date = new Date(datepicker);
     content += `
     <tr>
     <td>${tknv}</td>
     <td>${name}</td>
     <td>${email}</td>
-    <td>${datepicker}</td>
+    <td>${date.toLocaleDateString("en-US")}</td>
     <td>${chucvu}</td>
-    <td>${newNhanVien.tinhTongLuong()}</td>
+    <td>${newNhanVien
+      .tinhTongLuong()
+      .toLocaleString("vi-VN", { style: "currency", currency: "VND" })}</td>
     <td>${newNhanVien.xepLoai()}</td>
     <td>
     <button onclick="deleteNhanVien('${tknv}')" class="btn btn-danger">Xóa</button>
